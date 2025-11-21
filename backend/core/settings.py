@@ -47,6 +47,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # <--- ДОДАЙ ЦЕ НА ПОЧАТОК
+    # ДОДАЙТЕ WHITENOISE ТУТ:
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -124,6 +126,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 # Де фізично лежать файли
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Шлях, куди Django збиратиме статичні файли (ВАЖЛИВО)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Яке посилання буде в браузері
 MEDIA_URL = '/media/'
