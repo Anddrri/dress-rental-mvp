@@ -133,6 +133,30 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Яке посилання буде в браузері
 MEDIA_URL = '/media/'
 
+# 1. БЕЗПЕКА (Виправлення помилки входу)
+# Django має знати, що Render використовує HTTPS.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# 2. СТАТИЧНІ ФАЙЛИ (Виправлення відсутності CSS)
+# Шлях, куди WhiteNoise шукатиме та віддаватиме CSS/JS адмінки
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
+
+# Налаштування для WhiteNoise для коректної віддачі файлів
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
