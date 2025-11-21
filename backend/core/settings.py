@@ -48,8 +48,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # <--- ДОДАЙ ЦЕ НА ПОЧАТОК
     # ДОДАЙТЕ WHITENOISE ТУТ:
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -133,27 +134,31 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Яке посилання буде в браузері
 MEDIA_URL = '/media/'
 
-# 1. БЕЗПЕКА (Виправлення помилки входу)
-# Django має знати, що Render використовує HTTPS.
+
+
+
+# =================================================
+# === ФІНАЛЬНИЙ БЛОК ДЛЯ RENDER / ПРОДАКШЕНУ ===
+# =================================================
+ 
+# (os імпортується на початку файлу, але тут для ясності)
+
+# 1. БЕЗПЕКА (Виправлення помилки входу/CSRF)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-# 2. СТАТИЧНІ ФАЙЛИ (Виправлення відсутності CSS)
-# Шлях, куди WhiteNoise шукатиме та віддаватиме CSS/JS адмінки
+
+# 2. СТАТИЧНІ ФАЙЛИ (Найнадійніший спосіб з WhiteNoise)
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 
-# Налаштування для WhiteNoise для коректної віддачі файлів
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+# Це старий, але 100% надійний спосіб вказати WhiteNoise, 
+# де знаходяться стилі. (ЗАМІСТЬ STORAGES!)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
 
 
 
