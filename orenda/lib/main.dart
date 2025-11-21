@@ -91,16 +91,11 @@ class Dress {
   }
 }
 
-// --- API SERVICE ---
+// --- API SERVICE (ОНОВЛЕНО ДЛЯ RENDER.COM) ---
 Future<List<Dress>> fetchDresses() async {
-  String baseUrl;
-
-  if (kIsWeb) {
-    baseUrl = 'http://127.0.0.1:8000'; // Chrome
-  } else {
-    baseUrl = 'http://10.0.2.2:8000'; // Android Emulator
-  }
-
+  // Твоя жива адреса! Використовуємо HTTPS
+  const String baseUrl = 'https://dress-rental-mvp.onrender.com';
+  
   final String url = '$baseUrl/api/dresses/';
 
   try {
@@ -116,7 +111,6 @@ Future<List<Dress>> fetchDresses() async {
     throw Exception('Помилка з\'єднання: $e');
   }
 }
-
 // --- СТОРІНКА КАТЕГОРІЇ ---
 class CategoryPage extends StatefulWidget {
   final String categoryTitle;
