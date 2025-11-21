@@ -1,0 +1,12 @@
+# Python / Django
+backend/venv/
+backend/l_orenda_venv/
+backend/__pycache__/
+backend/*.sqlite3
+backend/media/
+
+# Flutter
+orenda/build/
+orenda/.dart_tool/
+orenda/.flutter-plugins
+orenda/.flutter-plugins-dependencies

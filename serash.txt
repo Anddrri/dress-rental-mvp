@@ -1,0 +1,33 @@
+const Text(
+                    "Параметри пошуку",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const Divider(),
+                  
+                  // Фільтр по віку
+                  const Text("Вік дитини (років):"),
+                  const Row(
+                    children: [
+                      Expanded(child: TextField(decoration: InputDecoration(hintText: "Від", isDense: true, border: OutlineInputBorder()))),
+                      SizedBox(width: 10),
+                      Expanded(child: TextField(decoration: InputDecoration(hintText: "До", isDense: true, border: OutlineInputBorder()))),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 20),
+
+                  // Фільтр по замірам
+                  const Text("Обхват талії (см):"),
+                  const TextField(decoration: InputDecoration(hintText: "Введіть см", border: OutlineInputBorder())),
+                  
+                  const SizedBox(height: 10),
+                  
+                  const Text("Зріст (см):"),
+                  const TextField(decoration: InputDecoration(hintText: "Введіть см", border: OutlineInputBorder())),
+
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {}, 
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, foregroundColor: Colors.white),
+                    child: const Text("Знайти сукню"),
+                  )
