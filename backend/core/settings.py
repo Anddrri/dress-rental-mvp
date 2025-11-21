@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-edf!*@wb+5*)8biq%oeok^fhjn(%a_za()pr6pr90s+9(i%!ch'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False  # <--- КРИТИЧНО! ВИМИКАЄМО DEBUG ДЛЯ RENDER
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']  # Дозволяємо всім звертатися (Render)
 
 
 # Application definition
@@ -39,18 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # <--- ДОДАЙ ЦІ РЯДКИ:
-    'rest_framework',   # Для API
-    'corsheaders',      # Щоб Flutter міг стукатись до сервера
-    'shop',             # Твій додаток магазину
+    # ВАШІ ДОДАТКИ
+    'rest_framework', 
+    'corsheaders', 
+    'rental_app', 
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # <--- ДОДАЙ ЦЕ НА ПОЧАТОК
-    # ДОДАЙТЕ WHITENOISE ТУТ:
-    
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # Обов'язково для CSS адмінки
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -68,6 +66,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -125,46 +124,31 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-# Де фізично лежать файли
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# Шлях, куди Django збиратиме статичні файли (ВАЖЛИВО)
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Яке посилання буде в браузері
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # Куди збираються CSS адмінки
 MEDIA_URL = '/media/'
 
 
-
-
 # =================================================
-# === ФІНАЛЬНИЙ БЛОК ДЛЯ RENDER / ПРОДАКШЕНУ ===
+# === ФІНАЛЬНИЙ БЛОК ДЛЯ RENDER / ПРОДАКШЕНУ (ФІКСИ) ===
 # =================================================
- 
-# (os імпортується на початку файлу, але тут для ясності)
 
-# 1. БЕЗПЕКА (Виправлення помилки входу/CSRF)
+# 1. БЕЗПЕКА (Виправлення помилки входу/CSRF на HTTPS)
+# Ці налаштування виправляють проблеми з HTTPS на Render
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 
-# 2. СТАТИЧНІ ФАЙЛИ (Найнадійніший спосіб з WhiteNoise)
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
-
-# Це старий, але 100% надійний спосіб вказати WhiteNoise, 
-# де знаходяться стилі. (ЗАМІСТЬ STORAGES!)
+# 2. СТАТИЧНІ ФАЙЛИ (Найнадійніший спосіб для WhiteNoise, виправляє 404)
+# Ця змінна дозволяє WhiteNoise коректно віддавати стилі
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
-
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# Дозволяємо всім стукатись до нас (для розробки - ОК)
+
 CORS_ALLOW_ALL_ORIGINS = True
